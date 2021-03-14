@@ -1,31 +1,42 @@
 package com.cigma.ace.exception;
 
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import com.cigma.ace.model.ErrorMessage;
 
 @RestControllerAdvice
-public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler  {
-
-	@ExceptionHandler(AccessDeniedException.class)
-	protected ResponseEntity<Object> handleAccessDeniedException(
-		      RuntimeException ex, WebRequest request) {
-
-	    ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
-	    
-		return new ResponseEntity<>(errorMessage, HttpStatus.FORBIDDEN);
-	}
+public class RestResponseEntityExceptionHandler{
 	
+	@ExceptionHandler(ModelNotFoundException.class)
+	protected ResponseEntity<Object> handleModelNotFoundException(Exception ex, WebRequest request) {
+		ExceptionResponse exResp = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<>(exResp, HttpStatus.NOT_FOUND);
+	}
+
 	@ExceptionHandler(Exception.class)
-	protected ResponseEntity<Object> handleOtherExceptions(
-	    RuntimeException ex, WebRequest request) {
-		ErrorMessage errorMessage = new ErrorMessage(ex.getMessage());
+	protected ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {
+		ExceptionResponse exResp = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<>(exResp, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	protected ResponseEntity<Object> handleBadRequestException(MethodArgumentNotValidException ex) {
+		List<BadRequestError> errorMessages  = ex.getBindingResult().getFieldErrors().stream()
+	            .map(err -> new BadRequestError(err.getField(), err.getRejectedValue(), err.getDefaultMessage()))
+	            .distinct()
+	            .collect(Collectors.toList());
+		BadRequestResponse exResp = BadRequestResponse.builder().errorMessage(errorMessages).build();
 		
-	    return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(exResp, HttpStatus.BAD_REQUEST);
 	}
 }

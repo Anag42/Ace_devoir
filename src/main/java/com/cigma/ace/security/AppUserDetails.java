@@ -1,16 +1,14 @@
 package com.cigma.ace.security;
 
 import java.util.Collection;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @SuppressWarnings("serial")
-public class User implements UserDetails {
+public class AppUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -49,5 +47,4 @@ public class User implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
 }
