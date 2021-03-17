@@ -9,4 +9,5 @@ import com.cigma.ace.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 	List<User> findByRole(Role role);
 	Boolean existsByEmail(String string);
+	Boolean existsByUsername(String string);
 }

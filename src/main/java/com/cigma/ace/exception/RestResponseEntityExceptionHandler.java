@@ -20,6 +20,14 @@ public class RestResponseEntityExceptionHandler{
 
 		return new ResponseEntity<>(exResp, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(UnsupportedOperationException.class)
+	protected ResponseEntity<Object> handleModelUnsupportedOperationException(Exception ex, WebRequest request) {
+		ExceptionResponse exResp = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+
+		return new ResponseEntity<>(exResp, HttpStatus.UNPROCESSABLE_ENTITY);
+	}
 
 	@ExceptionHandler(Exception.class)
 	protected ResponseEntity<Object> handleOtherExceptions(Exception ex, WebRequest request) {

@@ -37,6 +37,10 @@ public class UserServiceImpl implements UserService {
     public Boolean existsByEmail(String string) {
         return userRepository.existsByEmail(string);
     }
+    
+    public Boolean existsByUsername(String string) {
+        return userRepository.existsByUsername(string);
+    }
 
     public User save(User user) {
     	String password = RandomStringGenerator.alphaNumericString(12);
@@ -45,21 +49,30 @@ public class UserServiceImpl implements UserService {
     }
 
     public void deleteById(Long id) {
-    	userRepository.deleteById(id);
+    	userRepository.deleteById(id);	
     }
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean fieldValueExists(Object value, String fieldName) throws UnsupportedOperationException {
 		Assert.notNull(fieldName);
 
-        if (!fieldName.equals("email")) {
+        if (!fieldName.equals("email") && !fieldName.equals("username")) {
             throw new UnsupportedOperationException("Field name not supported");
         }
 
         if (value == null) {
             return false;
         }
+        
+//        Boolean isValid = false;
+        
+        if(fieldName.equals("email")) {
+        	return this.userRepository.existsByEmail(value.toString());
+        } else if(fieldName.equals("username")) {
+        	return this.userRepository.existsByUsername(value.toString());
+        }
 
-        return this.userRepository.existsByEmail(value.toString());
+        return true;
 	}
 }

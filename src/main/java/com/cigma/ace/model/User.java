@@ -1,7 +1,6 @@
 package com.cigma.ace.model;
 
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -33,8 +32,8 @@ public class User {
 
 	@NotBlank(message = "*Please provide an email")
 	@Email(message = "*Please provide a valid email")
-//	@Column(unique = true)
-	@Unique(service = UserService.class, fieldName = "email", message = "{email.unique.violation}")
+
+	@Column(unique = true)
 	private String email;
 
 	@NotBlank(message = "*Please provide an user name")

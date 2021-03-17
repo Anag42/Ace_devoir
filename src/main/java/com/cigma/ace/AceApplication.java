@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.cigma.ace.config.AdminCredentialsConfig;
 import com.cigma.ace.enums.Role;
@@ -25,7 +28,7 @@ public class AceApplication {
 	
 	@Bean
     public CommandLineRunner run(UserServiceImpl userService) throws Exception {
-        return (String[] args) -> {
+        return (String[] args) -> {      	
         	List<User> adminsList = userService.findByRole(Role.ADMIN);
         	User admin;
         	if(adminsList.isEmpty()) {

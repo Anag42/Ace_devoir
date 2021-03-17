@@ -1,11 +1,10 @@
 package com.cigma.ace.dto;
 
 import java.util.List;
-
 import org.mapstruct.Mapper;
 import com.cigma.ace.model.User;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 	UserDTO toUserDTO(User user);
 
