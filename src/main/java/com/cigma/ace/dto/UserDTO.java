@@ -1,7 +1,7 @@
 package com.cigma.ace.dto;
 
 import com.cigma.ace.annotation.Unique;
-import com.cigma.ace.service.UserService;
+import com.cigma.ace.service.IUserService;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,10 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-	private Long id;
-	@Unique(service = UserService.class, fieldName = "email", message = "{email.unique.violation}")
+	@Unique(service = IUserService.class, fieldName = "email", message = "{email.unique.violation}")
 	private String email;
-	@Unique(service = UserService.class, fieldName = "username", message = "{username.unique.violation}")
+	@Unique(service = IUserService.class, fieldName = "username", message = "{username.unique.violation}")
 	private String username;
 	private String telephone;
 }

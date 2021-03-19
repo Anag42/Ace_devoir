@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.cigma.ace.service.FieldValueExists;
+import com.cigma.ace.service.IFieldValueExists;
 import com.cigma.ace.validator.UniqueValidator;
 
 @Target({ ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE })
@@ -21,7 +21,7 @@ public @interface Unique {
     String message() default "{unique.value.violation}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
-    Class<? extends FieldValueExists> service();
+    Class<? extends IFieldValueExists> service();
     String serviceQualifier() default "";
     String fieldName();
 }

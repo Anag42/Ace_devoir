@@ -1,8 +1,10 @@
 package com.cigma.ace.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,14 +23,14 @@ import com.cigma.ace.dto.UserMapper;
 import com.cigma.ace.enums.Role;
 import com.cigma.ace.exception.ModelNotFoundException;
 import com.cigma.ace.model.User;
-import com.cigma.ace.service.UserServiceImpl;
+import com.cigma.ace.service.implementations.UserService;
 
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
 
 	@Autowired
-	UserServiceImpl userService;
+	UserService userService;
 
 	@Autowired
 	UserMapper userMapper;
@@ -39,9 +41,9 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> create(@Validated @RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> create(@Validated @RequestBody UserDTO userDTO) throws IOException, MessagingException {
 		
-		userService.save(userMapper.toUser(userDTO));
+		userService.create(userMapper.toUser(userDTO));
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
 	}
@@ -66,7 +68,7 @@ public class UserController {
 		User requestUser = userMapper.toUser(userDTO);
 
 		requestUser.setId(id);
-		userService.save(requestUser);
+		userService.update(requestUser);
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(userDTO);
 	}

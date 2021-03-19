@@ -1,6 +1,6 @@
 package com.cigma.ace.service;
 
-public interface FieldValueExists {
+public interface IFieldValueExists {
 	/**
      * Checks whether or not a given value exists for a given field
      * 

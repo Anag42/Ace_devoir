@@ -1,26 +1,37 @@
-package com.cigma.ace.service;
+package com.cigma.ace.service.implementations;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import com.cigma.ace.mail.WelcomeMail;
+import com.cigma.ace.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import com.cigma.ace.dto.UserMapper;
 import com.cigma.ace.enums.Role;
 import com.cigma.ace.model.User;
 import com.cigma.ace.repository.UserRepository;
 import com.cigma.ace.util.RandomStringGenerator;
 
+import javax.mail.MessagingException;
+
 @Service
-public class UserServiceImpl implements UserService {
+public class UserService implements IUserService {
 
 	@Autowired 
 	UserRepository userRepository;
-	
+
 	@Autowired
-	UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
+
+	@Autowired
+    WelcomeMail welcomeMail;
+
+	@Autowired
+    EmailService emailService;
 	
 	public List<User> findAll() {
         return userRepository.findAll();
@@ -42,10 +53,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.existsByUsername(string);
     }
 
-    public User save(User user) {
-    	String password = RandomStringGenerator.alphaNumericString(12);
-    	user.setPassword(password);
-        return userRepository.save(user);
+    public void create(User user) throws IOException, MessagingException {
+    	String password = RandomStringGenerator.alphaNumericString(15);
+    	String subject = "Welcome " + user.getUsername().toUpperCase() + "!";
+    	String body = welcomeMail.build(user, password);
+        emailService.sendSimpleEmail(user.getEmail(), subject, body);
+    	user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    public void update(User user){
+        userRepository.save(user);
     }
 
     public void deleteById(Long id) {
@@ -64,15 +82,11 @@ public class UserServiceImpl implements UserService {
         if (value == null) {
             return false;
         }
-        
-//        Boolean isValid = false;
-        
+
         if(fieldName.equals("email")) {
         	return this.userRepository.existsByEmail(value.toString());
-        } else if(fieldName.equals("username")) {
+        } else {
         	return this.userRepository.existsByUsername(value.toString());
         }
-
-        return true;
 	}
 }
