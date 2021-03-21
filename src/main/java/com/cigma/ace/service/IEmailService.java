@@ -4,5 +4,6 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 
 public interface IEmailService {
-    void sendSimpleEmail(String to, String subject, String body) throws MessagingException, IOException;
+    void sendSimpleMail(String to, String subject, String body);
+    void sendHtmlMail(String to, String subject, String body) throws MessagingException, IOException;
 }

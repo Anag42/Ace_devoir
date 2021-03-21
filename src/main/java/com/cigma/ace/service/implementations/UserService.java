@@ -4,41 +4,47 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import com.cigma.ace.mail.WelcomeMail;
-import com.cigma.ace.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
-
-import com.cigma.ace.enums.Role;
-import com.cigma.ace.model.User;
-import com.cigma.ace.repository.UserRepository;
-import com.cigma.ace.util.RandomStringGenerator;
-
 import javax.mail.MessagingException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
+import com.cigma.ace.enums.Role;
+import com.cigma.ace.mail.WelcomeMail;
+import com.cigma.ace.model.User;
+import com.cigma.ace.repository.UserRepository;
+import com.cigma.ace.service.IFieldValueExists;
+import com.cigma.ace.util.RandomStringGenerator;
+
 @Service
-public class UserService implements IUserService {
+public class UserService implements IFieldValueExists, UserDetailsService {
 
 	@Autowired 
 	UserRepository userRepository;
 
 	@Autowired
-    PasswordEncoder passwordEncoder;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
     WelcomeMail welcomeMail;
 
 	@Autowired
     EmailService emailService;
-	
+
 	public List<User> findAll() {
         return userRepository.findAll();
     }
 
     public Optional<User> findById(Long id) {
         return userRepository.findById(id);
+    }
+    
+    public User findByUsername(String string) {
+        return userRepository.findByUsername(string);
     }
     
     public List<User> findByRole(Role role) {
@@ -53,13 +59,16 @@ public class UserService implements IUserService {
         return userRepository.existsByUsername(string);
     }
 
-    public void create(User user) throws IOException, MessagingException {
+    public User create(User user) throws IOException, MessagingException {
     	String password = RandomStringGenerator.alphaNumericString(15);
     	String subject = "Welcome " + user.getUsername().toUpperCase() + "!";
     	String body = welcomeMail.build(user, password);
-        emailService.sendSimpleEmail(user.getEmail(), subject, body);
-    	user.setPassword(passwordEncoder.encode(password));
+        emailService.sendHtmlMail(user.getEmail(), subject, body);
+    	user.setPassword(bCryptPasswordEncoder.encode(password));
+    	user.setRole(Role.CLIENT);
         userRepository.save(user);
+        
+        return user;
     }
 
     public void update(User user){
@@ -69,6 +78,17 @@ public class UserService implements IUserService {
     public void deleteById(Long id) {
     	userRepository.deleteById(id);	
     }
+    
+    @Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(username);
+        
+        if (user == null) {
+            throw new UsernameNotFoundException("Could not find user");
+        }
+         
+        return user;
+	}
 
 	@SuppressWarnings("deprecation")
 	@Override

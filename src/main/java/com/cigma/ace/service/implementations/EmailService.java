@@ -2,6 +2,7 @@ package com.cigma.ace.service.implementations;
 
 import com.cigma.ace.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -13,16 +14,27 @@ import java.io.IOException;
 public class EmailService implements IEmailService {
 
     @Autowired
-    private JavaMailSender emailSender;
+    private JavaMailSender mailSender;
+    
+    @Override
+    public void sendSimpleMail(String to, String subject, String body){
+    	SimpleMailMessage msg = new SimpleMailMessage();
+    	 msg.setTo(to);
+    	 msg.setSubject(subject);
+    	 msg.setText(body);
+    	 mailSender.send(msg); 
+
+    }
+    
 
     @Override
-    public void sendSimpleEmail(String to, String subject, String body) throws MessagingException, IOException {
-        MimeMessage message = emailSender.createMimeMessage();
+    public void sendHtmlMail(String to, String subject, String body) throws MessagingException, IOException {
+        MimeMessage message = mailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(body, true);
-        emailSender.send(message);
+        mailSender.send(message);
     }
 }

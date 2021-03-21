@@ -3,7 +3,6 @@ package com.cigma.ace.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,21 +36,21 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
-		return ResponseEntity.ok(userMapper.toUserDTOs(userService.findByRole(Role.CLIENT)));
+		return ResponseEntity.ok(userMapper.toUserDTOs(userService.findByRole(Role.ADMIN)));
 	}
 
 	@PostMapping
 	public ResponseEntity<UserDTO> create(@Validated @RequestBody UserDTO userDTO) throws IOException, MessagingException {
 		
-		userService.create(userMapper.toUser(userDTO));
+		User user = userService.create(userMapper.toUser(userDTO));
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toUserDTO(user));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		Optional<User> user = userService.findById(id);
-
+		
 		if (!user.isPresent())
 			throw new ModelNotFoundException(User.class, id);
 

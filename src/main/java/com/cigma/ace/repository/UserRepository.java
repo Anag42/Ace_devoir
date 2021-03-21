@@ -7,6 +7,7 @@ import com.cigma.ace.enums.Role;
 import com.cigma.ace.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+	<Optional>User findByUsername(String username);
 	List<User> findByRole(Role role);
 	Boolean existsByEmail(String string);
 	Boolean existsByUsername(String string);

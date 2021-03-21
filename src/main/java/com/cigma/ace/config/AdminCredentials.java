@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 
 import lombok.Data;
 
-@Component
 @Configuration
 @ConfigurationProperties(prefix = "admin")
 @Data
-public class AdminCredentialsConfig {
+public class AdminCredentials {
 	private String email;
 	private String username;
+	private String password;
 
 }
