@@ -34,7 +34,7 @@ public class RestResponseEntityExceptionHandler{
 		ExceptionResponse exResp = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false));
 
-		return new ResponseEntity<>(ex, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(exResp, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

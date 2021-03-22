@@ -19,6 +19,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.cigma.ace.config.TokenProvider;
 import com.cigma.ace.exception.RestAccessDeniedHandler;
 import com.cigma.ace.exception.RestAuthenticationEntryPoint;
+import com.cigma.ace.repository.UserRepository;
 import com.cigma.ace.service.implementations.UserService;
 
 @Configuration
@@ -33,14 +34,17 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	RestAccessDeniedHandler accessDeniedHandler;
 
 	@Autowired
-	UserDetailsServiceImpl userService;
+	UserDetailsServiceImpl userDetailsService;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 	}
 
 	@Override
@@ -49,10 +53,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(HttpMethod.POST, TokenProvider.SIGN_UP_URL).permitAll()
 		.antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-		.antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
+//		.antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
 		.anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
-		.and().addFilter(new JWTAuthenticationFilter(authenticationManager())).addFilter(new JWTAuthorizationFilter(authenticationManager()))
+		.and().addFilter(new JWTAuthenticationFilter(authenticationManager())).addFilter(new JWTAuthorizationFilter(authenticationManager(), userRepository))
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	

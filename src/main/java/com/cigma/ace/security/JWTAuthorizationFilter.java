@@ -1,23 +1,16 @@
 package com.cigma.ace.security;
 
 import java.io.IOException;
-import java.util.Collection;
-
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cigma.ace.model.User;
 import com.cigma.ace.repository.UserRepository;
 import com.cigma.ace.security.implementations.UserDetailsImpl;
-import com.cigma.ace.service.implementations.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import com.auth0.jwt.JWT;
@@ -26,11 +19,11 @@ import com.cigma.ace.config.TokenProvider;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	@Autowired
     UserRepository userRepository;
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager) {
+	public JWTAuthorizationFilter(AuthenticationManager authManager, UserRepository userRepository) {
         super(authManager);
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -49,7 +42,6 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(req, res);
     }
 
-    // Reads the JWT from the Authorization header, and then uses JWT to validate the token
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(TokenProvider.HEADER_STRING);
 

@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +35,7 @@ public class UserController {
 	@Autowired
 	UserMapper userMapper;
 
+	@PreAuthorize("hasRole('CLIENT')")
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
 		return ResponseEntity.ok(userMapper.toUserDTOs(userService.findByRole(Role.CLIENT)));
