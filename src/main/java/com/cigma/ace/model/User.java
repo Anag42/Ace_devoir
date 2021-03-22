@@ -1,9 +1,7 @@
 package com.cigma.ace.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +32,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class User implements Serializable, UserDetails {
+public class User implements Serializable {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -62,44 +60,4 @@ public class User implements Serializable, UserDetails {
 
 	@UpdateTimestamp
 	private Date updatedAt;
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return Arrays.asList(new SimpleGrantedAuthority(role.toString()));
-	}
-
-	@Override
-	public String getPassword() {
-		// TODO Auto-generated method stub
-		return password;
-	}
-
-	@Override
-	public String getUsername() {
-		return username;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
 }

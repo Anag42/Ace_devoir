@@ -29,8 +29,8 @@ public class AceApplication {
 
 	@Bean
     public CommandLineRunner run(UserRepository userRepository) throws Exception {
-        return (String[] args) -> {      	
-        	List<User> adminsList = userRepository.findByRole(Role.ADMIN);
+        return (String[] args) -> {
+			List<User> adminsList = userRepository.findByRole(Role.ADMIN);
         	User admin;
         	if(adminsList.isEmpty()) {
         		admin = new User();

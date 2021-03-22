@@ -36,7 +36,7 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
-		return ResponseEntity.ok(userMapper.toUserDTOs(userService.findByRole(Role.ADMIN)));
+		return ResponseEntity.ok(userMapper.toUserDTOs(userService.findByRole(Role.CLIENT)));
 	}
 
 	@PostMapping

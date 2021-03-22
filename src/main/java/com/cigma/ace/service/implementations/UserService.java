@@ -3,9 +3,7 @@ package com.cigma.ace.service.implementations;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-
 import javax.mail.MessagingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +19,7 @@ import com.cigma.ace.service.IFieldValueExists;
 import com.cigma.ace.util.RandomStringGenerator;
 
 @Service
-public class UserService implements IFieldValueExists, UserDetailsService {
+public class UserService implements IFieldValueExists {
 
 	@Autowired 
 	UserRepository userRepository;
@@ -78,17 +76,6 @@ public class UserService implements IFieldValueExists, UserDetailsService {
     public void deleteById(Long id) {
     	userRepository.deleteById(id);	
     }
-    
-    @Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
-        
-        if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
-        }
-         
-        return user;
-	}
 
 	@SuppressWarnings("deprecation")
 	@Override
