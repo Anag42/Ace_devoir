@@ -21,8 +21,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
     UserRepository userRepository;
 
-	public JWTAuthorizationFilter(AuthenticationManager authManager, UserRepository userRepository) {
-        super(authManager);
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+        super(authenticationManager);
         this.userRepository = userRepository;
     }
 

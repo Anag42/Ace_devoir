@@ -1,5 +1,6 @@
 package com.cigma.ace.security;
 
+import com.cigma.ace.dto.UserMapper;
 import com.cigma.ace.security.implementations.UserDetailsImpl;
 import com.cigma.ace.security.implementations.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	UserMapper userMapper;
 	
 	@Autowired
 	BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -56,7 +60,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 //		.antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
 		.anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
-		.and().addFilter(new JWTAuthenticationFilter(authenticationManager())).addFilter(new JWTAuthorizationFilter(authenticationManager(), userRepository))
+		.and().addFilter(new JWTAuthenticationFilter(authenticationManager(), userMapper)).addFilter(new JWTAuthorizationFilter(authenticationManager(), userRepository))
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
