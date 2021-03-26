@@ -29,9 +29,9 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class User implements Serializable {
 	@Id
 	@GeneratedValue

@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -43,6 +40,10 @@ public class UserService implements IFieldValueExists {
     
     public User findByUsername(String string) {
         return userRepository.findByUsername(string);
+    }
+
+    public User findByEmail(String string) {
+        return userRepository.findByEmail(string);
     }
     
     public List<User> findByRole(Role role) {

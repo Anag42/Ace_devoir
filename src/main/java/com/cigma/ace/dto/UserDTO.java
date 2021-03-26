@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 	private Long Id;
 	@Unique(service = UserService.class, fieldName = "email", message = "{email.unique.violation}")
