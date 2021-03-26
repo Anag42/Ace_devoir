@@ -21,9 +21,9 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
+				
 		ServletOutputStream out = response.getOutputStream();
-		ExceptionResponse exResp =  new ExceptionResponse(new Date(), ex.getMessage(), "");
+		ExceptionResponse exResp =  new ExceptionResponse(new Date(), "Invalid Credentials/Token", "");
 		new ObjectMapper().writeValue(out, exResp);
 		out.flush();
 	}

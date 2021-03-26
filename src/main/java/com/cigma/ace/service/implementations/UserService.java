@@ -25,9 +25,6 @@ public class UserService implements IFieldValueExists {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Autowired
-    WelcomeMail welcomeMail;
-
-	@Autowired
     EmailService emailService;
 
 	public List<User> findAll() {
@@ -60,12 +57,14 @@ public class UserService implements IFieldValueExists {
 
     public User create(User user) throws IOException, MessagingException {
     	String password = RandomStringGenerator.alphaNumericString(15);
-    	String subject = "Welcome " + user.getUsername().toUpperCase() + "!";
-    	String body = welcomeMail.build(user, password);
-        emailService.sendHtmlMail(user.getEmail(), subject, body);
+    	
     	user.setPassword(bCryptPasswordEncoder.encode(password));
     	user.setRole(Role.CLIENT);
         userRepository.save(user);
+        
+        String subject = "Welcome " + user.getUsername().toUpperCase() + "!";
+    	String body = WelcomeMail.build(user, password);
+        emailService.sendHtmlMail(user.getEmail(), subject, body);
         
         return user;
     }

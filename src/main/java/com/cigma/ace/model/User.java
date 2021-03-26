@@ -1,8 +1,7 @@
 package com.cigma.ace.model;
 
 import java.io.Serializable;
-import java.util.*;
-
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,16 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import com.cigma.ace.enums.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,6 +41,7 @@ public class User implements Serializable {
 	@Column(unique = true)
 	private String username;
 
+	@NotNull
 	private String password;
 
 	@Pattern(regexp = "(^$|0[7|6][0-9]{8})")

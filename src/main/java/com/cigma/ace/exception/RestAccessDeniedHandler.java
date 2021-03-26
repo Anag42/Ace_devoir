@@ -24,7 +24,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
 		
 		ServletOutputStream out = response.getOutputStream();
 		ExceptionResponse exResp =  new ExceptionResponse(new Date(), ex.getMessage(), null);
-		new ObjectMapper().writeValue(out, ex);
+		new ObjectMapper().writeValue(out, exResp);
 		out.flush();
     }
 }

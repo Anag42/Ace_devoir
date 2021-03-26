@@ -1,8 +1,5 @@
 package com.cigma.ace.security;
 
-import com.cigma.ace.dto.UserMapper;
-import com.cigma.ace.security.implementations.UserDetailsImpl;
-import com.cigma.ace.security.implementations.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,10 +15,11 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.cigma.ace.config.TokenProvider;
+import com.cigma.ace.dto.UserMapper;
 import com.cigma.ace.exception.RestAccessDeniedHandler;
 import com.cigma.ace.exception.RestAuthenticationEntryPoint;
 import com.cigma.ace.repository.UserRepository;
-import com.cigma.ace.service.implementations.UserService;
+import com.cigma.ace.security.implementations.UserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -57,7 +55,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(HttpMethod.POST, TokenProvider.SIGN_UP_URL).permitAll()
 		.antMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
-//		.antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
+		.antMatchers("/api/v1/password/**").permitAll()
 		.anyRequest().authenticated()
 		.and().exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler)
 		.and().addFilter(new JWTAuthenticationFilter(authenticationManager(), userMapper)).addFilter(new JWTAuthorizationFilter(authenticationManager(), userRepository))

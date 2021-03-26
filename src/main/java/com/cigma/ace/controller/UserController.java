@@ -35,7 +35,7 @@ public class UserController {
 	@Autowired
 	UserMapper userMapper;
 
-	@PreAuthorize("hasRole('CLIENT')")
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> findAll() {
 		return ResponseEntity.ok(userMapper.toUserDTOs(userService.findByRole(Role.CLIENT)));
@@ -49,6 +49,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.toUserDTO(user));
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
 		Optional<User> user = userService.findById(id);
@@ -59,6 +60,7 @@ public class UserController {
 		return ResponseEntity.ok(userMapper.toUserDTO(user.get()));
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
 	public ResponseEntity<UserDTO> update(@Valid @PathVariable Long id, @RequestBody UserDTO userDTO) {
 		Optional<User> user = userService.findById(id);
@@ -74,6 +76,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(userDTO);
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		Optional<User> user = userService.findById(id);
