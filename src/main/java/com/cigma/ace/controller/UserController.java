@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.cigma.ace.dto.UserDTO;
-import com.cigma.ace.dto.UserMapper;
+import com.cigma.ace.dto.mappers.UserMapper;
 import com.cigma.ace.enums.Role;
 import com.cigma.ace.exception.ModelNotFoundException;
 import com.cigma.ace.model.User;
@@ -42,6 +43,7 @@ public class UserController {
 	}
 
 	@PostMapping
+	@Transactional
 	public ResponseEntity<UserDTO> create(@Validated @RequestBody UserDTO userDTO) throws IOException, MessagingException {
 		
 		User user = userService.create(userMapper.toUser(userDTO));
@@ -88,5 +90,4 @@ public class UserController {
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
-
 }

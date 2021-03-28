@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-	private Long Id;
+	private Long id;
 	@Unique(service = UserService.class, fieldName = "email", message = "{email.unique.violation}")
 	private String email;
 	@Unique(service = UserService.class, fieldName = "username", message = "{username.unique.violation}")

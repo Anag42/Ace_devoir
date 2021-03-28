@@ -8,7 +8,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.cigma.ace.config.AdminCredentials;
 import com.cigma.ace.enums.Role;
 import com.cigma.ace.model.User;

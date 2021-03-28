@@ -1,8 +1,8 @@
 package com.cigma.ace.controller;
 
 import com.cigma.ace.dto.ForgetPasswordDTO;
-import com.cigma.ace.dto.ForgetPasswordMapper;
 import com.cigma.ace.dto.PasswordResetDTO;
+import com.cigma.ace.dto.mappers.ForgetPasswordMapper;
 import com.cigma.ace.exception.InvalidPasswordResetTokenException;
 import com.cigma.ace.exception.ModelNotFoundException;
 import com.cigma.ace.model.PasswordReset;

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import com.cigma.ace.enums.Role;
 import com.cigma.ace.mail.WelcomeMail;
+import com.cigma.ace.model.Cart;
 import com.cigma.ace.model.User;
 import com.cigma.ace.repository.UserRepository;
 import com.cigma.ace.service.IFieldValueExists;
@@ -56,12 +57,21 @@ public class UserService implements IFieldValueExists {
     }
 
     public User create(User user) throws IOException, MessagingException {
+    	// Create User
     	String password = RandomStringGenerator.alphaNumericString(15);
-    	
     	user.setPassword(bCryptPasswordEncoder.encode(password));
     	user.setRole(Role.CLIENT);
+        
+        // Create User Cart
+        Cart cart = new Cart();
+        
+        // Association
+        cart.setUser(user);
+        user.setCart(cart);
+        
         userRepository.save(user);
         
+        // Send Welcome Mail
         String subject = "Welcome " + user.getUsername().toUpperCase() + "!";
     	String body = WelcomeMail.build(user, password);
         emailService.sendHtmlMail(user.getEmail(), subject, body);

@@ -7,7 +7,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.cigma.ace.dto.UserMapper;
+
 import com.cigma.ace.model.User;
 import com.cigma.ace.security.implementations.UserDetailsImpl;
 import org.springframework.http.MediaType;
@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cigma.ace.config.TokenProvider;
+import com.cigma.ace.dto.mappers.UserMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

@@ -15,7 +15,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.cigma.ace.config.TokenProvider;
-import com.cigma.ace.dto.UserMapper;
+import com.cigma.ace.dto.mappers.UserMapper;
 import com.cigma.ace.exception.RestAccessDeniedHandler;
 import com.cigma.ace.exception.RestAuthenticationEntryPoint;
 import com.cigma.ace.repository.UserRepository;

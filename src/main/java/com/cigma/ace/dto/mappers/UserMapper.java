@@ -1,7 +1,9 @@
-package com.cigma.ace.dto;
+package com.cigma.ace.dto.mappers;
 
 import java.util.List;
 import org.mapstruct.Mapper;
+
+import com.cigma.ace.dto.UserDTO;
 import com.cigma.ace.model.User;
 
 @Mapper(componentModel = "spring")
