@@ -58,4 +58,8 @@ public class ProductService implements IFieldValueExists {
         
         return false;
 	}
+
+	public List<Product> findByTitleIgnoreCaseContaining(String keyword) {
+		return productRepository.findByTitleIgnoreCaseContaining(keyword);
+	}
 }

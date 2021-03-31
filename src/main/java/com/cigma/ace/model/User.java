@@ -23,6 +23,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.cigma.ace.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
@@ -64,7 +65,8 @@ public class User implements Serializable {
 	@UpdateTimestamp
 	private Date updatedAt;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value = "user-cart")
+	@JsonIgnore
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Cart cart;
 }

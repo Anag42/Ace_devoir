@@ -95,4 +95,15 @@ public class ProductController {
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 	}
+	
+	@PreAuthorize("hasRole('ADMIN') OR hasRole('CLIENT')")
+	@GetMapping("/search/{keyword}")
+	public ResponseEntity<List<ProductDTO>> findByKeyword(@PathVariable String keyword) {
+		List<Product> products = productService.findByTitleIgnoreCaseContaining(keyword);
+		
+		if (products.isEmpty())
+			throw new ModelNotFoundException(Product.class, keyword);
+
+		return ResponseEntity.ok(productMapper.toProductDTOs(products));
+	}
 }

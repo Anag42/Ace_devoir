@@ -1,22 +1,17 @@
 package com.cigma.ace.model;
 
 import java.io.Serializable;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
+import org.hibernate.annotations.Proxy;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @SuppressWarnings("serial")
@@ -24,8 +19,7 @@ import lombok.Setter;
 @Table(name = "products")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Proxy(lazy = false)
 public class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,7 +34,7 @@ public class Product implements Serializable {
 	@NotNull
 	private Integer stock;
 	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<CartProduct> cartProducts;
+//	@JsonManagedReference(value = "product-cart")
+//	@OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    private Set<CartProduct> cartProducts = new HashSet<>();
 }

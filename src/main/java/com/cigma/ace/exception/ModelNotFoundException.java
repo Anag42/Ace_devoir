@@ -9,4 +9,8 @@ public class ModelNotFoundException extends RuntimeException  {
 	public ModelNotFoundException(Class<?> model, Long id) {
 		super("Model " + model.getSimpleName() + " of id " + id + " not found!");
 	}
+	
+	public ModelNotFoundException(Class<?> model, String keyword) {
+		super("Model " + model.getSimpleName() + " that containts keyword " + keyword + " not found!");
+	}
 }
