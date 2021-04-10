@@ -90,7 +90,6 @@ public class ProductController {
 		if (productService.presentInCart(id))
 			throw new DeleteProductStillInCartException();
 		
-
 		productService.deleteById(id);
 
 		return ResponseEntity.status(HttpStatus.ACCEPTED).build();

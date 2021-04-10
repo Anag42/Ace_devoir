@@ -47,8 +47,8 @@ public class CartProduct implements Serializable {
 	
 	
 	public Long getProductId() {
-	       return product.getId();
-	    }
+       return product.getId();
+    }
 
     public Long getCartId() {
        return cart.getId();

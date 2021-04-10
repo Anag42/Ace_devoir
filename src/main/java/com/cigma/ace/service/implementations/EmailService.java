@@ -2,6 +2,7 @@ package com.cigma.ace.service.implementations;
 
 import com.cigma.ace.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import javax.mail.internet.MimeMessage;
@@ -37,4 +38,20 @@ public class EmailService implements IEmailService {
         helper.setText(body, true);
         mailSender.send(message);
     }
+
+
+	@Override
+	public void sendHtmlMailWithAttachment(String to, String subject, String body, String filename,
+			ByteArrayResource resource) throws MessagingException, IOException {
+		MimeMessage message = mailSender.createMimeMessage();
+
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body, true);
+        helper.addAttachment(filename, resource);
+        mailSender.send(message);
+	}
+    
+    
 }

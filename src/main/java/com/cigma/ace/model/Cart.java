@@ -3,6 +3,7 @@ package com.cigma.ace.model;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.Proxy;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,6 +41,6 @@ public class Cart implements Serializable {
 	private User user;
 	
 	@JsonManagedReference(value = "cart-product")
-	@OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<CartProduct> cartProducts = new HashSet<CartProduct>();
+	@OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+    private Set<CartProduct> cartProducts = new HashSet<>();
 }

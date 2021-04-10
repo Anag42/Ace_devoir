@@ -25,7 +25,7 @@ public class RestResponseEntityExceptionHandler{
 		return new ResponseEntity<>(exResp, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(value = {InvalidPasswordResetTokenException.class, DeleteProductStillInCartException.class})
+	@ExceptionHandler(value = {InvalidPasswordResetTokenException.class, DeleteProductStillInCartException.class, InvalidQuantityException.class})
 	protected ResponseEntity<Object> handleInvalidPasswordResetTokenException(Exception ex, WebRequest request) {
 		ExceptionResponse exResp = new ExceptionResponse(new Date(), ex.getMessage(),
 				request.getDescription(false));
